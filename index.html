@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Thundrr Referral Program</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  #thundrr-ref *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  #thundrr-ref{
+    --bg:#070708;--red:#ff0d4a;--orange:#f97316;
+    --txt:#fff;--muted:rgba(255,255,255,.62);--faint:rgba(255,255,255,.40);
+    --glass:rgba(255,255,255,.045);--glass-bd:rgba(255,255,255,.10);
+    font-family:'Montserrat',sans-serif;color:var(--txt);background:var(--bg);
+    line-height:1.45;position:relative;overflow:hidden;width:100%;-webkit-font-smoothing:antialiased;
+  }
+
+  /* BACKGROUND */
+  #thundrr-ref .bg-layer{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+  #thundrr-ref .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;animation:tr-float 18s ease-in-out infinite;}
+  #thundrr-ref .orb.a{width:420px;height:420px;background:radial-gradient(circle,var(--red),transparent 65%);top:-130px;left:-110px;}
+  #thundrr-ref .orb.b{width:460px;height:460px;background:radial-gradient(circle,var(--orange),transparent 65%);top:40%;right:-170px;animation-delay:-6s;opacity:.4;}
+  #thundrr-ref .orb.c{width:380px;height:380px;background:radial-gradient(circle,#7a0a24,transparent 65%);bottom:-150px;left:25%;animation-delay:-11s;opacity:.4;}
+  @keyframes tr-float{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(40px,-50px) scale(1.12);}66%{transform:translate(-30px,40px) scale(.94);}}
+  #thundrr-ref .grid-ov{position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+    background-size:46px 46px;
+    mask-image:radial-gradient(ellipse 80% 55% at 50% 25%,#000 30%,transparent 75%);
+    -webkit-mask-image:radial-gradient(ellipse 80% 55% at 50% 25%,#000 30%,transparent 75%);}
+  #thundrr-ref .noise{position:absolute;inset:0;opacity:.04;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+  #thundrr-ref .particles{position:absolute;inset:0;}
+  #thundrr-ref .particles i{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);opacity:0;animation:tr-rise linear infinite;}
+  @keyframes tr-rise{0%{transform:translateY(20px);opacity:0;}15%{opacity:.8;}85%{opacity:.8;}100%{transform:translateY(-120px);opacity:0;}}
+
+  /* LAYOUT */
+  #thundrr-ref .wrap{position:relative;z-index:2;max-width:860px;margin:0 auto;padding:0 20px;}
+  #thundrr-ref section{position:relative;z-index:2;}
+
+  /* REVEAL */
+  #thundrr-ref .rv{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);}
+  #thundrr-ref .rv.in{opacity:1;transform:none;}
+
+  /* HERO */
+  #thundrr-ref .hero{padding:44px 0 26px;text-align:center;}
+  #thundrr-ref .badge{display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:100px;
+    background:var(--glass);border:1px solid var(--glass-bd);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    font-size:10.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
+  #thundrr-ref .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);animation:tr-pulse 1.8s ease-in-out infinite;}
+  @keyframes tr-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}
+  #thundrr-ref h1{font-weight:900;font-size:clamp(38px,9.5vw,64px);line-height:.94;letter-spacing:-1.8px;text-transform:uppercase;margin-bottom:16px;}
+  #thundrr-ref h1 .word{display:inline-block;opacity:0;transform:translateY(36px) rotate(3deg);animation:tr-word .75s cubic-bezier(.2,.8,.2,1) forwards;}
+  @keyframes tr-word{to{opacity:1;transform:none;}}
+  #thundrr-ref .grad{background:linear-gradient(105deg,var(--red),var(--orange));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 22px rgba(255,13,74,.45));}
+  #thundrr-ref .sub{font-size:clamp(14px,3.6vw,16px);color:var(--muted);font-weight:500;max-width:500px;margin:0 auto 22px;}
+
+  /* HERO ROW: figure + cta side by side on desktop */
+  #thundrr-ref .hero-row{display:flex;flex-direction:column;align-items:center;gap:20px;}
+  #thundrr-ref .figure{position:relative;width:100%;max-width:420px;padding:26px 24px;border-radius:26px;
+    background:var(--glass);border:1px solid var(--glass-bd);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+    box-shadow:0 24px 64px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.10);overflow:hidden;}
+  #thundrr-ref .figure::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+    background:conic-gradient(from 0deg,transparent,rgba(255,13,74,.16),transparent 30%);animation:tr-spin 7s linear infinite;}
+  @keyframes tr-spin{to{transform:rotate(360deg);}}
+  #thundrr-ref .figure .inner{position:relative;z-index:1;}
+  #thundrr-ref .pct{font-weight:900;font-size:clamp(66px,18vw,110px);line-height:1;letter-spacing:-4px;
+    background:linear-gradient(160deg,#fff 20%,var(--red) 70%,var(--orange));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 34px rgba(255,13,74,.5));}
+  #thundrr-ref .pct-cap{margin-top:4px;font-size:12px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);}
+  #thundrr-ref .pct-cap b{color:#fff;}
+
+  /* CTA */
+  #thundrr-ref .btn{display:inline-flex;align-items:center;gap:9px;padding:15px 32px;border-radius:100px;border:none;cursor:pointer;
+    font-family:inherit;font-weight:800;font-size:15px;letter-spacing:.5px;text-transform:uppercase;color:#fff;text-decoration:none;
+    background:linear-gradient(105deg,var(--red),var(--orange));box-shadow:0 12px 34px rgba(255,13,74,.42),inset 0 1px 0 rgba(255,255,255,.3);
+    transition:transform .25s ease,box-shadow .25s ease;position:relative;overflow:hidden;}
+  #thundrr-ref .btn::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+    background:linear-gradient(105deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);animation:tr-shine 3.4s ease-in-out infinite;}
+  @keyframes tr-shine{0%{left:-120%;}55%,100%{left:160%;}}
+  #thundrr-ref .btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 18px 46px rgba(255,13,74,.55);}
+  #thundrr-ref .btn:active{transform:translateY(-1px) scale(.99);}
+  #thundrr-ref .arrow{font-size:17px;transition:transform .25s;}
+  #thundrr-ref .btn:hover .arrow{transform:translateX(4px);}
+
+  /* SECTION */
+  #thundrr-ref .sec{padding:20px 0;}
+  #thundrr-ref .eyebrow{display:block;text-align:center;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+  #thundrr-ref h2{text-align:center;font-weight:900;font-size:clamp(25px,6.5vw,36px);line-height:1.02;letter-spacing:-1px;text-transform:uppercase;margin-bottom:8px;}
+  #thundrr-ref .lead{text-align:center;color:var(--muted);font-weight:500;max-width:500px;margin:0 auto 22px;font-size:clamp(13.5px,3.6vw,15px);}
+
+  /* STEPS grid */
+  #thundrr-ref .steps{display:grid;grid-template-columns:1fr;gap:10px;margin-top:6px;}
+  #thundrr-ref .card{position:relative;padding:16px 18px;border-radius:18px;
+    background:var(--glass);border:1px solid var(--glass-bd);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    box-shadow:0 14px 40px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);overflow:hidden;transition:transform .35s ease,border-color .35s ease;}
+  #thundrr-ref .card:hover{transform:translateY(-4px);border-color:rgba(255,13,74,.4);}
+  #thundrr-ref .card .glow{position:absolute;top:-40px;right:-40px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(255,13,74,.4),transparent 70%);filter:blur(20px);}
+  #thundrr-ref .card .chead{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  #thundrr-ref .card .num{font-weight:900;font-size:24px;line-height:1;letter-spacing:-1px;background:linear-gradient(135deg,var(--red),var(--orange));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  #thundrr-ref .card h3{font-weight:800;font-size:15.5px;letter-spacing:-.3px;}
+  #thundrr-ref .card p{color:var(--muted);font-size:13px;font-weight:500;}
+  #thundrr-ref .card p b{color:#fff;font-weight:700;}
+
+  /* BOTH WAYS */
+  #thundrr-ref .both{margin-top:12px;padding:18px 20px;border-radius:20px;text-align:center;
+    background:linear-gradient(160deg,rgba(255,13,74,.12),rgba(249,115,22,.06));border:1px solid rgba(255,13,74,.28);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);}
+  #thundrr-ref .both .pair{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+  #thundrr-ref .both .chip{flex:1;min-width:120px;padding:12px 12px;border-radius:14px;background:var(--glass);border:1px solid var(--glass-bd);}
+  #thundrr-ref .both .chip .lbl{font-size:10.5px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+  #thundrr-ref .both .chip .v{font-weight:900;font-size:23px;background:linear-gradient(135deg,var(--red),var(--orange));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  #thundrr-ref .both .x{font-weight:900;font-size:20px;color:var(--faint);}
+  #thundrr-ref .both p{color:var(--muted);font-size:13px;font-weight:500;}
+  #thundrr-ref .both p b{color:#fff;}
+
+  /* ===== CATALOGUE ===== */
+  #thundrr-ref .search{position:relative;max-width:460px;margin:0 auto 18px;}
+  #thundrr-ref .search input{width:100%;padding:14px 44px 14px 44px;border-radius:100px;font-family:inherit;font-size:14.5px;font-weight:500;
+    color:#fff;background:var(--glass);border:1px solid var(--glass-bd);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);outline:none;transition:border-color .25s;}
+  #thundrr-ref .search input::placeholder{color:var(--faint);}
+  #thundrr-ref .search input:focus{border-color:rgba(255,13,74,.5);}
+  #thundrr-ref .search .si{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:16px;opacity:.55;}
+  #thundrr-ref .search .clr{position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--faint);font-size:20px;line-height:1;display:none;background:none;border:none;font-family:inherit;}
+
+  #thundrr-ref .cat-shell{position:relative;}
+  #thundrr-ref .cat-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+  #thundrr-ref .prod{position:relative;display:flex;align-items:center;gap:13px;padding:14px 15px;border-radius:18px;
+    background:var(--glass);border:1px solid var(--glass-bd);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    box-shadow:0 10px 30px rgba(0,0,0,.32);transition:transform .3s ease,border-color .3s ease;}
+  #thundrr-ref .prod:hover{transform:translateY(-3px);border-color:rgba(255,13,74,.4);}
+  #thundrr-ref .prod .av{flex-shrink:0;width:46px;height:46px;border-radius:13px;display:grid;place-items:center;
+    font-weight:900;font-size:16px;letter-spacing:-.5px;color:#fff;background:linear-gradient(135deg,var(--red),var(--orange));box-shadow:0 6px 18px rgba(255,13,74,.35);}
+  #thundrr-ref .prod .meta{flex:1;min-width:0;}
+  #thundrr-ref .prod .bn{font-weight:800;font-size:15px;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  #thundrr-ref .prod .boost{display:inline-flex;align-items:center;gap:5px;margin-top:4px;padding:3px 9px;border-radius:100px;
+    font-size:10px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:#4ade80;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);}
+  #thundrr-ref .prod .boost::before{content:"";width:5px;height:5px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px #4ade80;}
+  #thundrr-ref .prod .add{flex-shrink:0;display:inline-flex;align-items:center;gap:6px;padding:10px 15px;border-radius:100px;border:none;cursor:pointer;
+    font-family:inherit;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:#fff;text-decoration:none;
+    background:linear-gradient(105deg,var(--red),var(--orange));box-shadow:0 8px 22px rgba(255,13,74,.4);transition:transform .2s;white-space:nowrap;}
+  #thundrr-ref .prod .add:hover{transform:scale(1.05);}
+
+  #thundrr-ref .veil{position:absolute;left:0;right:0;bottom:0;height:62%;border-radius:0 0 18px 18px;
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;cursor:pointer;
+    background:linear-gradient(to bottom,rgba(7,7,8,0) 0%,rgba(7,7,8,.55) 45%,rgba(7,7,8,.95) 100%);
+    backdrop-filter:blur(2.5px);-webkit-backdrop-filter:blur(2.5px);}
+  #thundrr-ref .veil .expand-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:100px;border:none;cursor:pointer;
+    font-family:inherit;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:#fff;
+    background:linear-gradient(105deg,var(--red),var(--orange));box-shadow:0 12px 32px rgba(255,13,74,.5);}
+  #thundrr-ref .cat-shell.open .veil{display:none;}
+  #thundrr-ref .nores{text-align:center;color:var(--muted);font-weight:500;font-size:14px;padding:24px 0;display:none;}
+
+  #thundrr-ref .float-collapse{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:50;display:none;align-items:center;gap:7px;
+    padding:12px 20px;border-radius:100px;cursor:pointer;font-family:inherit;font-weight:800;font-size:12.5px;
+    text-transform:uppercase;letter-spacing:.5px;color:#fff;background:rgba(20,20,24,.85);border:1px solid rgba(255,255,255,.16);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 12px 34px rgba(0,0,0,.5);}
+  #thundrr-ref .float-collapse.show{display:inline-flex;animation:tr-pop .3s ease;}
+  @keyframes tr-pop{from{opacity:0;transform:translate(-50%,12px) scale(.9);}to{opacity:1;transform:translateX(-50%);}}
+
+  /* GUIDELINES grid */
+  #thundrr-ref .rules{display:grid;grid-template-columns:1fr;gap:10px;margin-top:6px;}
+  #thundrr-ref .rule{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:16px;
+    background:var(--glass);border:1px solid var(--glass-bd);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+  #thundrr-ref .rule .ic{flex-shrink:0;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--red),var(--orange));font-weight:900;font-size:15px;box-shadow:0 6px 18px rgba(255,13,74,.4);}
+  #thundrr-ref .rule .tx h4{font-weight:800;font-size:14.5px;margin-bottom:2px;}
+  #thundrr-ref .rule .tx p{color:var(--muted);font-size:12.5px;font-weight:500;}
+  #thundrr-ref .rule .tx p b{color:#fff;}
+
+  /* FINAL */
+  #thundrr-ref .final{text-align:center;padding:28px 0 44px;}
+  #thundrr-ref .final h2{margin-bottom:10px;}
+  #thundrr-ref .final .lead{margin-bottom:20px;}
+  #thundrr-ref .foot{margin-top:22px;font-size:10.5px;color:var(--faint);letter-spacing:1px;text-transform:uppercase;font-weight:600;}
+
+  /* DESKTOP: spread into columns to kill scroll */
+  @media(min-width:680px){
+    #thundrr-ref .steps{grid-template-columns:repeat(3,1fr);}
+    #thundrr-ref .rules{grid-template-columns:1fr 1fr;}
+    #thundrr-ref .hero-row{flex-direction:row;justify-content:center;}
+    #thundrr-ref .figure{max-width:340px;}
+    #thundrr-ref .cat-grid{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+<div id="thundrr-ref">
+
+  <div class="bg-layer">
+    <span class="orb a"></span><span class="orb b"></span><span class="orb c"></span>
+    <div class="grid-ov"></div>
+    <div class="particles" id="trParticles"></div>
+    <div class="noise"></div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="badge"><span class="dot"></span> Thundrr Referral Program</span>
+      <h1>
+        <span class="word" style="animation-delay:.05s">Refer.</span>
+        <span class="word grad" style="animation-delay:.18s">Earn.</span>
+        <span class="word" style="animation-delay:.31s">Repeat.</span>
+      </h1>
+      <p class="sub rv">Bring creators to Thundrr and earn a slice of <b style="color:#fff">every dollar</b> they generate. No cap. Open to <b style="color:#fff">everyone</b> &mdash; Thundrr creator or not.</p>
+      <div class="hero-row">
+        <div class="figure rv">
+          <div class="inner">
+            <div class="pct" id="trPct">1%</div>
+            <div class="pct-cap">of <b>ALL settlement GMV</b> &middot; {X} days</div>
+          </div>
+        </div>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSddr56S-fpZTfZbhJ8n-QGoZ8Z8cOBd2HXppXr8W4RPBONjDQ/viewform?usp=header" target="_blank" rel="noopener" class="btn rv" id="trCtaTop">Start Referring <span class="arrow">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="sec">
+    <div class="wrap">
+      <span class="eyebrow rv">How It Works</span>
+      <h2 class="rv">Three steps. Real payouts.</h2>
+      <div class="steps">
+        <div class="card rv"><span class="glow"></span><div class="chead"><span class="num">01</span><h3>Refer a Creator</h3></div><p>Share Thundrr with any creator &mdash; already with us or brand new. <b>Everyone qualifies.</b></p></div>
+        <div class="card rv"><span class="glow"></span><div class="chead"><span class="num">02</span><h3>They Link &amp; Showcase</h3></div><p>They connect, add campaign products with <b>our links</b>, and promote.</p></div>
+        <div class="card rv"><span class="glow"></span><div class="chead"><span class="num">03</span><h3>You Both Get Paid</h3></div><p><b>1% of all settlement GMV</b> flows back to you both as a bonus.</p></div>
+      </div>
+      <div class="both rv">
+        <div class="pair">
+          <div class="chip"><div class="lbl">You (Referrer)</div><div class="v">+1%</div></div>
+          <span class="x">&plus;</span>
+          <div class="chip"><div class="lbl">Your Referral</div><div class="v">+1%</div></div>
+        </div>
+        <p>Both the referrer <b>and</b> the referred creator earn <b>1% of all settlement GMV</b> &mdash; for <b>{X} days</b>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATALOGUE -->
+  <section class="sec">
+    <div class="wrap">
+      <span class="eyebrow rv">Participating Products</span>
+      <h2 class="rv">The campaign catalogue</h2>
+      <p class="lead rv">Every brand below pays <b style="color:#fff">increased commission</b>. Add them to your showcase &mdash; or share them with the creators you refer.</p>
+      <div class="search rv">
+        <span class="si">&#128269;</span>
+        <input type="text" id="trSearch" placeholder="Search brands or categories...">
+        <button class="clr" id="trClear">&times;</button>
+      </div>
+      <div class="cat-shell" id="trShell">
+        <div class="cat-grid" id="trGrid"></div>
+        <div class="veil" id="trVeil"><button class="expand-btn" id="trExpand">Click to expand <span id="trMore"></span> &#9662;</button></div>
+      </div>
+      <div class="nores" id="trNo">No brands match that search.</div>
+    </div>
+  </section>
+
+  <!-- GUIDELINES -->
+  <section class="sec">
+    <div class="wrap">
+      <span class="eyebrow rv">The Fine Print</span>
+      <h2 class="rv">Simple guidelines</h2>
+      <p class="lead rv">No hoops. Just link, showcase, and promote with our products.</p>
+      <div class="rules">
+        <div class="rule rv"><div class="ic">&#10003;</div><div class="tx"><h4>Open to anyone</h4><p>You don't need to be a current Thundrr creator to refer.</p></div></div>
+        <div class="rule rv"><div class="ic">&#10003;</div><div class="tx"><h4>Link &amp; showcase products</h4><p>Your referral connects to Thundrr and adds campaign products with <b>our links</b>.</p></div></div>
+        <div class="rule rv"><div class="ic">&#10003;</div><div class="tx"><h4>Earn on settlement GMV</h4><p>The 1% applies to <b>all settlement GMV</b> in the <b>{X}-day</b> window.</p></div></div>
+        <div class="rule rv"><div class="ic">&#8734;</div><div class="tx"><h4>No referral cap</h4><p>Refer as many creators as you want. Every active referral stacks.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="final">
+    <div class="wrap">
+      <span class="eyebrow rv">Ready?</span>
+      <h2 class="rv">Your network is your <span class="grad">paycheck.</span></h2>
+      <p class="lead rv">Start referring creators to Thundrr today and turn every introduction into recurring GMV bonuses.</p>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSddr56S-fpZTfZbhJ8n-QGoZ8Z8cOBd2HXppXr8W4RPBONjDQ/viewform?usp=header" target="_blank" rel="noopener" class="btn rv" id="trCtaBottom">Refer a Creator <span class="arrow">&rarr;</span></a>
+      <div class="foot rv">Thundrr &mdash; TikTok Shop Partner</div>
+    </div>
+  </section>
+  <button class="float-collapse" id="trFloat">&#9652; Collapse catalogue</button>
+
+</div>
+<script>
+(function(){
+  var root=document.getElementById('thundrr-ref');
+  var pc=document.getElementById('trParticles');
+  for(var i=0;i<18;i++){var p=document.createElement('i');p.style.left=(Math.random()*100)+'%';p.style.bottom=(Math.random()*40)+'%';p.style.animationDuration=(6+Math.random()*8)+'s';p.style.animationDelay=(Math.random()*8)+'s';if(i%2){p.style.background='var(--orange)';p.style.boxShadow='0 0 8px var(--orange)';}pc.appendChild(p);}
+  var rvs=root.querySelectorAll('.rv');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var el=e.target;var sibs=Array.prototype.slice.call(el.parentNode.querySelectorAll('.rv'));el.style.transitionDelay=(sibs.indexOf(el)%4*0.07)+'s';el.classList.add('in');io.unobserve(el);}});},{threshold:.14});
+    rvs.forEach(function(el){io.observe(el);});
+  } else { rvs.forEach(function(el){el.classList.add('in');}); }
+  var pct=document.getElementById('trPct'),counted=false;
+  function runCount(){if(counted)return;counted=true;var v=0;var t=setInterval(function(){v+=0.05;if(v>=1){v=1;clearInterval(t);pct.textContent='1%';return;}pct.textContent=v.toFixed(2)+'%';},18);}
+  if('IntersectionObserver' in window){var io2=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){runCount();io2.disconnect();}});},{threshold:.5});io2.observe(pct);} else {runCount();}
+  function postH(){var h=root.scrollHeight;try{window.parent.postMessage({type:'thundrr-ref-height',height:h},'*');}catch(e){}}
+  window.addEventListener('load',function(){postH();setTimeout(postH,600);setTimeout(postH,1500);});
+  window.addEventListener('resize',postH);
+  if('ResizeObserver' in window){new ResizeObserver(postH).observe(root);}
+
+  /* ===== CATALOGUE =====
+     Edit this list: name = brand, cat = category, boost = commission badge text, url = your TAP affiliate link */
+  var PRODUCTS=[
+    {name:"Medicube",   cat:"Skincare",   boost:"Increased Commission", url:"#"},
+    {name:"SKIN1004",   cat:"Skincare",   boost:"Increased Commission", url:"#"},
+    {name:"Sloosh",     cat:"Home",       boost:"Increased Commission", url:"#"},
+    {name:"Joytutus",   cat:"Auto",       boost:"Increased Commission", url:"#"},
+    {name:"Yeoreo",     cat:"Sports",     boost:"Increased Commission", url:"#"},
+    {name:"Tempro",     cat:"Electronics",boost:"Increased Commission", url:"#"},
+    {name:"R & W Co",   cat:"Apparel",    boost:"Increased Commission", url:"#"},
+    {name:"Laneige",    cat:"Skincare",   boost:"Increased Commission", url:"#"},
+    {name:"Beauty of Joseon",cat:"Skincare",boost:"Increased Commission",url:"#"},
+    {name:"Kitsch",     cat:"Hair",       boost:"Increased Commission", url:"#"},
+    {name:"Bissell",    cat:"Household",  boost:"Increased Commission", url:"#"},
+    {name:"Native",     cat:"Bath & Body",boost:"Increased Commission", url:"#"}
+  ];
+  var INITIAL=6; // cards shown collapsed (first 3 clear, next 3 faded)
+  var grid=document.getElementById('trGrid'),shell=document.getElementById('trShell'),veil=document.getElementById('trVeil'),
+      moreEl=document.getElementById('trMore'),noEl=document.getElementById('trNo'),
+      searchEl=document.getElementById('trSearch'),clrEl=document.getElementById('trClear'),
+      floatBtn=document.getElementById('trFloat');
+  var expanded=false;
+
+  function initials(n){var p=n.replace(/[^A-Za-z0-9 ]/g,'').trim().split(/\s+/);return ((p[0]||'')[0]||'')+((p[1]||'')[0]||(p[0]||'')[1]||'');}
+  function cardHTML(p){
+    var href=(p.url&&p.url!=='#')?p.url:'#';
+    return '<div class="prod"><div class="av">'+initials(p.name).toUpperCase()+'</div>'+
+      '<div class="meta"><div class="bn">'+p.name+'</div><span class="boost">'+p.boost+'</span></div>'+
+      '<a class="add" href="'+href+'" target="_blank" rel="noopener">Add &plus;</a></div>';
+  }
+  function render(){
+    var q=searchEl.value.trim().toLowerCase();
+    var list=PRODUCTS.filter(function(p){return !q||p.name.toLowerCase().indexOf(q)>-1||p.cat.toLowerCase().indexOf(q)>-1;});
+    clrEl.style.display=q?'block':'none';
+    noEl.style.display=list.length?'none':'block';
+    var searching=q.length>0;
+    var show=(expanded||searching)?list:list.slice(0,INITIAL);
+    grid.innerHTML=show.map(cardHTML).join('');
+    // veil only when collapsed, not searching, and there are more than INITIAL
+    var collapsed=!expanded && !searching && list.length>INITIAL;
+    shell.classList.toggle('open',!collapsed);
+    veil.style.display=collapsed?'flex':'none';
+    moreEl.textContent='('+Math.max(list.length-INITIAL,0)+' more)';
+    floatBtn.classList.toggle('show',expanded && !searching);
+    // mirror to Webflow parent (matches existing tdrCollapseBtn contract)
+    try{window.parent.postMessage({type:'tdrCollapseBtn',action:(expanded&&!searching)?'show':'hide'},'*');}catch(e){}
+    postH();
+  }
+  function expand(){expanded=true;render();}
+  function collapse(){expanded=false;render();var sh=shell.getBoundingClientRect().top+window.pageYOffset-90;window.scrollTo({top:sh,behavior:'smooth'});}
+  document.getElementById('trExpand').addEventListener('click',expand);
+  veil.addEventListener('click',function(e){if(e.target===veil)expand();});
+  floatBtn.addEventListener('click',collapse);
+  clrEl.addEventListener('click',function(){searchEl.value='';render();searchEl.focus();});
+  searchEl.addEventListener('input',render);
+  // parent can trigger collapse too (existing contract)
+  window.addEventListener('message',function(e){if(e.data&&e.data.type==='tdrCollapse')collapse();});
+  render();
+})();
+</script>
+</body>
+</html>
