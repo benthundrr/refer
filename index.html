@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
+  html,body{margin:0;padding:0;background:#070708;}
   #thundrr-ref *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   #thundrr-ref{
     --bg:#070708;--red:#ff0d4a;--orange:#f97316;
@@ -60,10 +61,17 @@
   #thundrr-ref .hero-row{display:flex;flex-direction:column;align-items:center;gap:20px;}
   #thundrr-ref .figure{position:relative;width:100%;max-width:420px;padding:26px 24px;border-radius:26px;
     background:var(--glass);border:1px solid var(--glass-bd);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
-    box-shadow:0 24px 64px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.10);overflow:hidden;}
-  #thundrr-ref .figure::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;
-    background:conic-gradient(from 0deg,transparent,rgba(255,13,74,.16),transparent 30%);animation:tr-spin 7s linear infinite;}
-  @keyframes tr-spin{to{transform:rotate(360deg);}}
+    box-shadow:0 24px 64px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.10);overflow:hidden;
+    animation:tr-halo 5s ease-in-out infinite;}
+  #thundrr-ref .figure::before{content:"";position:absolute;top:-35%;left:-25%;width:150%;height:150%;
+    background:radial-gradient(42% 42% at 30% 32%,rgba(255,13,74,.55),transparent 70%),
+               radial-gradient(46% 46% at 72% 64%,rgba(249,115,22,.45),transparent 70%),
+               radial-gradient(38% 38% at 55% 90%,rgba(255,13,74,.35),transparent 72%);
+    filter:blur(30px);animation:tr-aurora 6s ease-in-out infinite;}
+  @keyframes tr-aurora{0%,100%{transform:translate(0,0) scale(1);opacity:.6;}50%{transform:translate(5%,-4%) scale(1.14);opacity:.95;}}
+  @keyframes tr-halo{
+    0%,100%{box-shadow:0 24px 64px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.10),0 0 38px rgba(255,13,74,.22);}
+    50%{box-shadow:0 24px 64px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.10),0 0 78px rgba(255,13,74,.45);}}
   #thundrr-ref .figure .inner{position:relative;z-index:1;}
   #thundrr-ref .pct{font-weight:900;font-size:clamp(66px,18vw,110px);line-height:1;letter-spacing:-4px;
     background:linear-gradient(160deg,#fff 20%,var(--red) 70%,var(--orange));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 34px rgba(255,13,74,.5));}
@@ -324,6 +332,7 @@
       searchEl=document.getElementById('trSearch'),clrEl=document.getElementById('trClear'),
       floatBtn=document.getElementById('trFloat');
   var expanded=false;
+  var embedded=(window.self!==window.top);
 
   function initials(n){var p=n.replace(/[^A-Za-z0-9 ]/g,'').trim().split(/\s+/);return ((p[0]||'')[0]||'')+((p[1]||'')[0]||(p[0]||'')[1]||'');}
   function cardHTML(p){
@@ -345,13 +354,13 @@
     shell.classList.toggle('open',!collapsed);
     veil.style.display=collapsed?'flex':'none';
     moreEl.textContent='('+Math.max(list.length-INITIAL,0)+' more)';
-    floatBtn.classList.toggle('show',expanded && !searching);
+    floatBtn.classList.toggle('show',!embedded && expanded && !searching);
     // mirror to Webflow parent (matches existing tdrCollapseBtn contract)
     try{window.parent.postMessage({type:'tdrCollapseBtn',action:(expanded&&!searching)?'show':'hide'},'*');}catch(e){}
     postH();
   }
   function expand(){expanded=true;render();}
-  function collapse(){expanded=false;render();var sh=shell.getBoundingClientRect().top+window.pageYOffset-90;window.scrollTo({top:sh,behavior:'smooth'});}
+  function collapse(){expanded=false;render();if(!embedded){var sh=shell.getBoundingClientRect().top+window.pageYOffset-90;window.scrollTo({top:sh,behavior:'smooth'});}}
   document.getElementById('trExpand').addEventListener('click',expand);
   veil.addEventListener('click',function(e){if(e.target===veil)expand();});
   floatBtn.addEventListener('click',collapse);
