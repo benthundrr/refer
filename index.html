@@ -687,6 +687,13 @@
   searchEl.addEventListener('input',render);
   // parent can trigger collapse too (existing contract)
   window.addEventListener('message',function(e){if(e.data&&e.data.type==='tdrCollapse')collapse();});
+  // viewport slice from the parent embed -> reposition the open modal over it
+  window.addEventListener('message',function(e){
+    if(e.data&&e.data.type==='thundrr-ref-vp'&&typeof e.data.top==='number'){
+      lastVp={top:e.data.top,height:e.data.height};
+      if(ov.classList.contains('show'))applyVp();
+    }
+  });
   render();
 
   /* ============================================================
@@ -697,6 +704,19 @@
 
   var ov=document.getElementById('trOv');
   if(ov&&ov.parentNode!==document.body){document.body.appendChild(ov);}
+  // In an auto-height embed iframe, position:fixed pins to the full content
+  // height (not the visible screen), so the modal would render far off-screen.
+  // The parent embed sends 'thundrr-ref-vp' telling us which slice of the
+  // iframe is on-screen; we position the overlay absolutely over that slice.
+  var lastVp=null,vpFallback=null;
+  function applyVp(){
+    if(!embedded||!lastVp)return;
+    ov.style.position='absolute';
+    ov.style.top=lastVp.top+'px';
+    ov.style.bottom='auto';
+    ov.style.height=lastVp.height+'px';
+    ov.style.visibility='visible';
+  }
   var views={
     choice:document.getElementById('trViewChoice'),
     benefits:document.getElementById('trViewBenefits'),
@@ -711,14 +731,27 @@
   }
   function openModal(){
     showView('choice');
+    if(embedded){
+      ov.style.visibility=lastVp?'visible':'hidden';
+      applyVp();
+      // Fallback: if the parent never sends viewport info (e.g. a host that
+      // doesn't run the embed handshake), revert to plain fixed + show.
+      clearTimeout(vpFallback);
+      vpFallback=setTimeout(function(){
+        if(ov.classList.contains('show')&&!lastVp){
+          ov.style.position='fixed';ov.style.top='0';ov.style.bottom='0';ov.style.height='auto';ov.style.visibility='visible';
+        }
+      },260);
+    }
     ov.classList.add('show');
-    document.documentElement.style.overflow='hidden';
     try{window.parent.postMessage({type:'thundrr-ref-modal',action:'open'},'*');}catch(e){}
+    if(!embedded){document.documentElement.style.overflow='hidden';}
   }
   function closeModal(){
+    clearTimeout(vpFallback);
     ov.classList.remove('show');
-    document.documentElement.style.overflow='';
     try{window.parent.postMessage({type:'thundrr-ref-modal',action:'close'},'*');}catch(e){}
+    if(!embedded){document.documentElement.style.overflow='';}
   }
 
   // open triggers (both CTAs)
