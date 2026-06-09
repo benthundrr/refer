@@ -691,7 +691,7 @@
   window.addEventListener('message',function(e){
     if(e.data&&e.data.type==='thundrr-ref-vp'&&typeof e.data.top==='number'){
       lastVp={top:e.data.top,height:e.data.height};
-      if(ov.classList.contains('show'))applyVp();
+      if(ov.classList.contains('show'))placeOverlay();
     }
   });
   render();
@@ -705,17 +705,22 @@
   var ov=document.getElementById('trOv');
   if(ov&&ov.parentNode!==document.body){document.body.appendChild(ov);}
   // In an auto-height embed iframe, position:fixed pins to the full content
-  // height (not the visible screen), so the modal would render far off-screen.
-  // The parent embed sends 'thundrr-ref-vp' telling us which slice of the
-  // iframe is on-screen; we position the overlay absolutely over that slice.
-  var lastVp=null,vpFallback=null;
-  function applyVp(){
+  // height (not the visible screen). The parent embed sends 'thundrr-ref-vp'
+  // telling us which slice of the iframe is currently on-screen; we lay the
+  // overlay absolutely over that slice and follow it as the user scrolls.
+  // No scroll lock and no hiding, so the user can never get trapped.
+  var lastVp=null;
+  function placeOverlay(){
     if(!embedded||!lastVp)return;
     ov.style.position='absolute';
     ov.style.top=lastVp.top+'px';
+    ov.style.left='0';
+    ov.style.right='0';
     ov.style.bottom='auto';
     ov.style.height=lastVp.height+'px';
-    ov.style.visibility='visible';
+  }
+  function clearOverlayPos(){
+    ov.style.position='';ov.style.top='';ov.style.left='';ov.style.right='';ov.style.bottom='';ov.style.height='';
   }
   var views={
     choice:document.getElementById('trViewChoice'),
@@ -731,27 +736,16 @@
   }
   function openModal(){
     showView('choice');
-    if(embedded){
-      ov.style.visibility=lastVp?'visible':'hidden';
-      applyVp();
-      // Fallback: if the parent never sends viewport info (e.g. a host that
-      // doesn't run the embed handshake), revert to plain fixed + show.
-      clearTimeout(vpFallback);
-      vpFallback=setTimeout(function(){
-        if(ov.classList.contains('show')&&!lastVp){
-          ov.style.position='fixed';ov.style.top='0';ov.style.bottom='0';ov.style.height='auto';ov.style.visibility='visible';
-        }
-      },260);
-    }
     ov.classList.add('show');
+    if(embedded){ placeOverlay(); }            // best guess from cached vp; refined by incoming vp
+    else { document.documentElement.style.overflow='hidden'; }
     try{window.parent.postMessage({type:'thundrr-ref-modal',action:'open'},'*');}catch(e){}
-    if(!embedded){document.documentElement.style.overflow='hidden';}
   }
   function closeModal(){
-    clearTimeout(vpFallback);
     ov.classList.remove('show');
+    clearOverlayPos();
+    if(!embedded){ document.documentElement.style.overflow=''; }
     try{window.parent.postMessage({type:'thundrr-ref-modal',action:'close'},'*');}catch(e){}
-    if(!embedded){document.documentElement.style.overflow='';}
   }
 
   // open triggers (both CTAs)
