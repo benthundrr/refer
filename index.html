@@ -182,6 +182,94 @@
   #thundrr-ref .final .lead{margin-bottom:20px;}
   #thundrr-ref .foot{margin-top:22px;font-size:10.5px;color:var(--faint);letter-spacing:1px;text-transform:uppercase;font-weight:600;}
 
+  /* ============================================================
+     ===== REFERRAL PROGRAM POPUP =====
+     ============================================================ */
+  #thundrr-ref .tr-ov{position:fixed;inset:0;z-index:200;display:none;align-items:flex-start;justify-content:center;
+    padding:24px 16px;overflow-y:auto;background:rgba(4,4,6,.74);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
+  #thundrr-ref .tr-ov.show{display:flex;animation:tr-fade .3s ease;}
+  @keyframes tr-fade{from{opacity:0;}to{opacity:1;}}
+  #thundrr-ref .tr-modal{position:relative;width:100%;max-width:480px;margin:auto;border-radius:26px;padding:26px 24px 28px;
+    background:linear-gradient(165deg,rgba(22,22,26,.96),rgba(10,10,12,.97));border:1px solid var(--glass-bd);
+    box-shadow:0 30px 80px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.1),0 0 60px rgba(255,13,74,.18);
+    overflow:hidden;animation:tr-rise-modal .4s cubic-bezier(.2,.8,.2,1);}
+  @keyframes tr-rise-modal{from{opacity:0;transform:translateY(26px) scale(.97);}to{opacity:1;transform:none;}}
+  #thundrr-ref .tr-modal::before{content:"";position:absolute;top:-40%;left:-20%;width:140%;height:120%;pointer-events:none;
+    background:radial-gradient(40% 40% at 28% 22%,rgba(255,13,74,.32),transparent 70%),
+               radial-gradient(44% 44% at 76% 12%,rgba(249,115,22,.24),transparent 70%);
+    filter:blur(28px);opacity:.85;}
+  #thundrr-ref .tr-modal>*{position:relative;z-index:1;}
+  #thundrr-ref .tr-close{position:absolute;top:14px;right:16px;z-index:3;background:rgba(255,255,255,.06);border:1px solid var(--glass-bd);
+    width:34px;height:34px;border-radius:50%;color:#fff;font-size:18px;line-height:1;cursor:pointer;display:grid;place-items:center;
+    font-family:inherit;transition:background .2s,transform .2s;}
+  #thundrr-ref .tr-close:hover{background:rgba(255,13,74,.25);transform:rotate(90deg);}
+
+  #thundrr-ref .tr-mhead{text-align:center;margin-bottom:20px;}
+  #thundrr-ref .tr-mbadge{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:100px;margin-bottom:12px;
+    background:var(--glass);border:1px solid var(--glass-bd);font-size:9.5px;font-weight:800;letter-spacing:2.4px;text-transform:uppercase;color:var(--muted);}
+  #thundrr-ref .tr-mbadge .dot{width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 9px var(--red);animation:tr-pulse 1.8s ease-in-out infinite;}
+  #thundrr-ref .tr-mhead h3{font-weight:900;font-size:clamp(24px,6vw,30px);line-height:1;letter-spacing:-1px;text-transform:uppercase;}
+  #thundrr-ref .tr-mhead p{margin-top:8px;font-size:13px;font-weight:500;color:var(--muted);}
+
+  /* the two circles */
+  #thundrr-ref .tr-choices{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:6px;}
+  #thundrr-ref .tr-circle{flex:1;min-width:150px;max-width:190px;cursor:pointer;border:none;background:none;font-family:inherit;
+    display:flex;flex-direction:column;align-items:center;gap:12px;padding:6px 4px 4px;}
+  #thundrr-ref .tr-circle .ring{position:relative;width:104px;height:104px;border-radius:50%;display:grid;place-items:center;
+    background:var(--glass);border:1.5px solid var(--glass-bd);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 12px 30px rgba(0,0,0,.45);
+    transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s;}
+  #thundrr-ref .tr-circle .ring .ico{font-size:38px;line-height:1;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));}
+  #thundrr-ref .tr-circle .ring::after{content:"";position:absolute;inset:-2px;border-radius:50%;padding:2px;
+    background:linear-gradient(135deg,var(--red),var(--orange));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .3s;}
+  #thundrr-ref .tr-circle:hover .ring{transform:translateY(-5px) scale(1.04);border-color:transparent;box-shadow:0 20px 44px rgba(255,13,74,.4),inset 0 1px 0 rgba(255,255,255,.15);}
+  #thundrr-ref .tr-circle:hover .ring::after{opacity:1;}
+  #thundrr-ref .tr-circle .clab{font-weight:800;font-size:14px;letter-spacing:-.2px;color:#fff;}
+  #thundrr-ref .tr-circle .csub{font-weight:600;font-size:10.5px;letter-spacing:.3px;text-transform:uppercase;color:var(--faint);}
+
+  /* views */
+  #thundrr-ref .tr-view{display:none;}
+  #thundrr-ref .tr-view.active{display:block;}
+
+  /* back link */
+  #thundrr-ref .tr-back{display:inline-flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font-family:inherit;
+    color:var(--muted);font-weight:700;font-size:12px;letter-spacing:.4px;margin-bottom:14px;padding:4px 0;transition:color .2s;}
+  #thundrr-ref .tr-back:hover{color:#fff;}
+
+  /* form fields */
+  #thundrr-ref .tr-field{margin-bottom:14px;}
+  #thundrr-ref .tr-field label{display:block;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+  #thundrr-ref .tr-field label .req{color:var(--red);}
+  #thundrr-ref .tr-input,#thundrr-ref .tr-select{width:100%;padding:13px 15px;border-radius:13px;font-family:inherit;font-size:14px;font-weight:500;
+    color:#fff;background:var(--glass);border:1px solid var(--glass-bd);outline:none;transition:border-color .2s,background .2s;}
+  #thundrr-ref .tr-input::placeholder{color:var(--faint);}
+  #thundrr-ref .tr-input:focus,#thundrr-ref .tr-select:focus{border-color:rgba(255,13,74,.55);background:rgba(255,255,255,.06);}
+  #thundrr-ref .tr-select{appearance:none;-webkit-appearance:none;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23ff0d4a' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 16px center;padding-right:38px;}
+  #thundrr-ref .tr-select option{background:#141418;color:#fff;}
+
+  /* niche chips */
+  #thundrr-ref .tr-chips{display:flex;flex-wrap:wrap;gap:8px;}
+  #thundrr-ref .tr-chip{padding:9px 14px;border-radius:100px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;
+    color:var(--muted);background:var(--glass);border:1px solid var(--glass-bd);transition:all .2s;}
+  #thundrr-ref .tr-chip:hover{color:#fff;border-color:rgba(255,13,74,.4);}
+  #thundrr-ref .tr-chip.sel{color:#fff;background:linear-gradient(105deg,var(--red),var(--orange));border-color:transparent;box-shadow:0 8px 20px rgba(255,13,74,.4);}
+  #thundrr-ref .tr-other-wrap{margin-top:10px;display:none;}
+  #thundrr-ref .tr-other-wrap.show{display:block;}
+
+  #thundrr-ref .tr-submit{width:100%;margin-top:6px;justify-content:center;}
+  #thundrr-ref .tr-submit[disabled]{opacity:.55;cursor:not-allowed;transform:none;}
+  #thundrr-ref .tr-err{color:var(--red);font-size:12px;font-weight:700;margin-top:10px;text-align:center;display:none;}
+
+  /* success */
+  #thundrr-ref .tr-success{text-align:center;padding:14px 6px 6px;}
+  #thundrr-ref .tr-success .tick{width:74px;height:74px;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;
+    font-size:36px;color:#fff;background:linear-gradient(135deg,var(--red),var(--orange));box-shadow:0 16px 40px rgba(255,13,74,.5);
+    animation:tr-rise-modal .5s cubic-bezier(.2,.8,.2,1);}
+  #thundrr-ref .tr-success h3{font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:-.5px;margin-bottom:8px;}
+  #thundrr-ref .tr-success p{color:var(--muted);font-size:13.5px;font-weight:500;max-width:320px;margin:0 auto 20px;}
+
   /* DESKTOP: spread into columns to kill scroll */
   @media(min-width:680px){
     #thundrr-ref .steps{grid-template-columns:repeat(3,1fr);}
@@ -219,7 +307,7 @@
             <div class="pct-cap">of <b>ALL settlement GMV</b> &middot; {X} days</div>
           </div>
         </div>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSddr56S-fpZTfZbhJ8n-QGoZ8Z8cOBd2HXppXr8W4RPBONjDQ/viewform?usp=header" target="_blank" rel="noopener" class="btn rv" id="trCtaTop">Start Referring <span class="arrow">&rarr;</span></a>
+        <button type="button" class="btn rv" data-open-ref id="trCtaTop">Start Referring <span class="arrow">&rarr;</span></button>
       </div>
     </div>
   </section>
@@ -285,11 +373,123 @@
       <span class="eyebrow rv">Ready?</span>
       <h2 class="rv">Your network is your <span class="grad">paycheck.</span></h2>
       <p class="lead rv">Start referring creators to Thundrr today and turn every introduction into recurring GMV bonuses.</p>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSddr56S-fpZTfZbhJ8n-QGoZ8Z8cOBd2HXppXr8W4RPBONjDQ/viewform?usp=header" target="_blank" rel="noopener" class="btn rv" id="trCtaBottom">Refer a Creator <span class="arrow">&rarr;</span></a>
+      <button type="button" class="btn rv" data-open-ref id="trCtaBottom">Refer a Creator <span class="arrow">&rarr;</span></button>
       <div class="foot rv">Thundrr &mdash; TikTok Shop Partner</div>
     </div>
   </section>
   <button class="float-collapse" id="trFloat">&#9652; Collapse catalogue</button>
+
+  <!-- ============================================================
+       REFERRAL PROGRAM POPUP
+       ============================================================ -->
+  <div class="tr-ov" id="trOv" role="dialog" aria-modal="true" aria-label="Referral Program">
+    <div class="tr-modal">
+      <button type="button" class="tr-close" id="trCloseBtn" aria-label="Close">&times;</button>
+
+      <!-- VIEW 0: CHOICE (two circles) -->
+      <div class="tr-view active" id="trViewChoice">
+        <div class="tr-mhead">
+          <span class="tr-mbadge"><span class="dot"></span> Referral Program</span>
+          <h3>Pick your path</h3>
+          <p>Tell us which side of the referral you're on.</p>
+        </div>
+        <div class="tr-choices">
+          <button type="button" class="tr-circle" data-go="referral">
+            <span class="ring"><span class="ico">&#127919;</span></span>
+            <span class="clab">I'm a referral</span>
+            <span class="csub">Someone sent me</span>
+          </button>
+          <button type="button" class="tr-circle" data-go="referrer">
+            <span class="ring"><span class="ico">&#128184;</span></span>
+            <span class="clab">I want to start referring</span>
+            <span class="csub">Earn on every referral</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- VIEW A: REFERRER (PayPal + TikTok) -->
+      <div class="tr-view" id="trViewReferrer">
+        <button type="button" class="tr-back" data-back>&larr; Back</button>
+        <div class="tr-mhead" style="margin-bottom:18px">
+          <span class="tr-mbadge"><span class="dot"></span> Start Referring</span>
+          <h3>Get paid to refer</h3>
+          <p>Drop your details so we can route your 1% bonus.</p>
+        </div>
+        <div class="tr-field">
+          <label>PayPal Email <span class="req">*</span></label>
+          <input type="email" class="tr-input" id="rrPaypal" placeholder="you@paypal.com" autocomplete="email">
+        </div>
+        <div class="tr-field">
+          <label>TikTok Username <span class="req">*</span></label>
+          <input type="text" class="tr-input" id="rrTikTok" placeholder="@yourhandle">
+        </div>
+        <button type="button" class="btn tr-submit" id="rrSubmit">Submit <span class="arrow">&rarr;</span></button>
+        <div class="tr-err" id="rrErr"></div>
+      </div>
+
+      <!-- VIEW B: REFERRAL (full fields) -->
+      <div class="tr-view" id="trViewReferral">
+        <button type="button" class="tr-back" data-back>&larr; Back</button>
+        <div class="tr-mhead" style="margin-bottom:18px">
+          <span class="tr-mbadge"><span class="dot"></span> I'm a Referral</span>
+          <h3>Claim your bonus</h3>
+          <p>Fill this in so we can link you to your referrer.</p>
+        </div>
+        <div class="tr-field">
+          <label>Who were you referred by? <span class="req">*</span></label>
+          <input type="text" class="tr-input" id="rfBy" placeholder="Their name or TikTok handle">
+        </div>
+        <div class="tr-field">
+          <label>TikTok Username <span class="req">*</span></label>
+          <input type="text" class="tr-input" id="rfTikTok" placeholder="@yourhandle">
+        </div>
+        <div class="tr-field">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" class="tr-input" id="rfEmail" placeholder="you@email.com" autocomplete="email">
+        </div>
+        <div class="tr-field">
+          <label>GMV Level <span class="req">*</span></label>
+          <select class="tr-select" id="rfGmv">
+            <option value="" disabled selected>Select your tier...</option>
+            <option value="L1 — Nano ($0–$1K GMV)">L1 — Nano &middot; $0–$1K GMV</option>
+            <option value="L2 — Micro ($1K–$5K GMV)">L2 — Micro &middot; $1K–$5K GMV</option>
+            <option value="L3 — Mid ($5K–$20K GMV)">L3 — Mid &middot; $5K–$20K GMV</option>
+            <option value="L4 — Macro ($20K–$50K GMV)">L4 — Macro &middot; $20K–$50K GMV</option>
+            <option value="L5 — Mega ($50K–$200K GMV)">L5 — Mega &middot; $50K–$200K GMV</option>
+            <option value="L6 — Elite ($200K+ GMV)">L6 — Elite &middot; $200K+ GMV</option>
+          </select>
+        </div>
+        <div class="tr-field">
+          <label>Product Niche <span class="req">*</span></label>
+          <div class="tr-chips" id="rfNiche">
+            <button type="button" class="tr-chip" data-niche="Beauty">Beauty</button>
+            <button type="button" class="tr-chip" data-niche="Sports and Outdoor">Sports and Outdoor</button>
+            <button type="button" class="tr-chip" data-niche="Food and Beverage">Food and Beverage</button>
+            <button type="button" class="tr-chip" data-niche="Electronics">Electronics</button>
+            <button type="button" class="tr-chip" data-niche="Fashion">Fashion</button>
+            <button type="button" class="tr-chip" data-niche="Home">Home</button>
+            <button type="button" class="tr-chip" data-niche="Other">Other</button>
+          </div>
+          <div class="tr-other-wrap" id="rfOtherWrap">
+            <input type="text" class="tr-input" id="rfOther" placeholder="Tell us your niche...">
+          </div>
+        </div>
+        <button type="button" class="btn tr-submit" id="rfSubmit">Submit <span class="arrow">&rarr;</span></button>
+        <div class="tr-err" id="rfErr"></div>
+      </div>
+
+      <!-- VIEW SUCCESS -->
+      <div class="tr-view" id="trViewSuccess">
+        <div class="tr-success">
+          <div class="tick">&#10003;</div>
+          <h3>You're in!</h3>
+          <p id="trSuccessMsg">Thanks &mdash; we've got your details. Our team will be in touch shortly.</p>
+          <button type="button" class="btn" id="trDone" style="justify-content:center">Done</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 </div>
 <script>
@@ -369,6 +569,126 @@
   // parent can trigger collapse too (existing contract)
   window.addEventListener('message',function(e){if(e.data&&e.data.type==='tdrCollapse')collapse();});
   render();
+
+  /* ============================================================
+     REFERRAL PROGRAM POPUP LOGIC
+     ============================================================ */
+  var ENDPOINT_REFERRER="https://formspree.io/f/xvznrdol"; // PayPal + TikTok
+  var ENDPOINT_REFERRAL="https://formspree.io/f/xkoabknk";  // full referral form
+
+  var ov=document.getElementById('trOv');
+  var views={
+    choice:document.getElementById('trViewChoice'),
+    referrer:document.getElementById('trViewReferrer'),
+    referral:document.getElementById('trViewReferral'),
+    success:document.getElementById('trViewSuccess')
+  };
+  function showView(name){
+    Object.keys(views).forEach(function(k){views[k].classList.toggle('active',k===name);});
+    ov.scrollTop=0;
+  }
+  function openModal(){
+    showView('choice');
+    ov.classList.add('show');
+    document.documentElement.style.overflow='hidden';
+    try{window.parent.postMessage({type:'thundrr-ref-modal',action:'open'},'*');}catch(e){}
+  }
+  function closeModal(){
+    ov.classList.remove('show');
+    document.documentElement.style.overflow='';
+    try{window.parent.postMessage({type:'thundrr-ref-modal',action:'close'},'*');}catch(e){}
+  }
+
+  // open triggers (both CTAs)
+  Array.prototype.slice.call(root.querySelectorAll('[data-open-ref]')).forEach(function(b){
+    b.addEventListener('click',openModal);
+  });
+  document.getElementById('trCloseBtn').addEventListener('click',closeModal);
+  document.getElementById('trDone').addEventListener('click',closeModal);
+  ov.addEventListener('click',function(e){if(e.target===ov)closeModal();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&ov.classList.contains('show'))closeModal();});
+
+  // path selection (two circles)
+  Array.prototype.slice.call(ov.querySelectorAll('[data-go]')).forEach(function(c){
+    c.addEventListener('click',function(){showView(c.getAttribute('data-go'));});
+  });
+  // back buttons -> choice
+  Array.prototype.slice.call(ov.querySelectorAll('[data-back]')).forEach(function(b){
+    b.addEventListener('click',function(){showView('choice');});
+  });
+
+  // niche chips
+  var selectedNiche=null;
+  var nicheWrap=document.getElementById('rfNiche');
+  var otherWrap=document.getElementById('rfOtherWrap');
+  Array.prototype.slice.call(nicheWrap.querySelectorAll('.tr-chip')).forEach(function(chip){
+    chip.addEventListener('click',function(){
+      nicheWrap.querySelectorAll('.tr-chip').forEach(function(c){c.classList.remove('sel');});
+      chip.classList.add('sel');
+      selectedNiche=chip.getAttribute('data-niche');
+      otherWrap.classList.toggle('show',selectedNiche==='Other');
+    });
+  });
+
+  function setErr(el,msg){el.textContent=msg;el.style.display=msg?'block':'none';}
+  function isEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+
+  function submitForm(endpoint,data,btn,errEl,successMsg){
+    setErr(errEl,'');
+    var orig=btn.innerHTML;
+    btn.disabled=true;btn.innerHTML='Submitting...';
+    var fd=new FormData();
+    Object.keys(data).forEach(function(k){fd.append(k,data[k]);});
+    fetch(endpoint,{method:'POST',body:fd,headers:{'Accept':'application/json'}})
+      .then(function(r){
+        if(r.ok){document.getElementById('trSuccessMsg').textContent=successMsg;showView('success');}
+        else{r.json().then(function(d){
+          var m=(d&&d.errors&&d.errors.length)?d.errors.map(function(x){return x.message;}).join(', '):'Something went wrong. Please try again.';
+          setErr(errEl,m);
+        }).catch(function(){setErr(errEl,'Something went wrong. Please try again.');});}
+      })
+      .catch(function(){setErr(errEl,'Network error. Please check your connection and try again.');})
+      .finally(function(){btn.disabled=false;btn.innerHTML=orig;});
+  }
+
+  // ----- REFERRER submit (PayPal + TikTok) -----
+  var rrBtn=document.getElementById('rrSubmit');
+  rrBtn.addEventListener('click',function(){
+    var paypal=document.getElementById('rrPaypal').value.trim();
+    var tiktok=document.getElementById('rrTikTok').value.trim();
+    if(!paypal||!tiktok){setErr(document.getElementById('rrErr'),'Please fill in both fields.');return;}
+    if(!isEmail(paypal)){setErr(document.getElementById('rrErr'),'Please enter a valid PayPal email.');return;}
+    submitForm(ENDPOINT_REFERRER,{
+      "Type":"Referrer (wants to refer others)",
+      "PayPal Email":paypal,
+      "TikTok Username":tiktok
+    },rrBtn,document.getElementById('rrErr'),
+    "You're set up to refer. Share Thundrr and your 1% bonus will land in your PayPal.");
+  });
+
+  // ----- REFERRAL submit (full form) -----
+  var rfBtn=document.getElementById('rfSubmit');
+  rfBtn.addEventListener('click',function(){
+    var by=document.getElementById('rfBy').value.trim();
+    var tiktok=document.getElementById('rfTikTok').value.trim();
+    var email=document.getElementById('rfEmail').value.trim();
+    var gmv=document.getElementById('rfGmv').value;
+    var other=document.getElementById('rfOther').value.trim();
+    var err=document.getElementById('rfErr');
+    var niche=selectedNiche;
+    if(niche==='Other'){niche=other?('Other: '+other):'';}
+    if(!by||!tiktok||!email||!gmv||!niche){setErr(err,'Please complete every required field.');return;}
+    if(!isEmail(email)){setErr(err,'Please enter a valid email address.');return;}
+    submitForm(ENDPOINT_REFERRAL,{
+      "Type":"Referral (was referred)",
+      "Referred By":by,
+      "TikTok Username":tiktok,
+      "Email":email,
+      "GMV Level":gmv,
+      "Product Niche":niche
+    },rfBtn,err,
+    "Thanks! We've linked you to your referrer. Our team will reach out with next steps.");
+  });
 })();
 </script>
 </body>
