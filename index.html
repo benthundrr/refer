@@ -131,6 +131,12 @@
   #thundrr-ref .search .si{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:16px;opacity:.55;}
   #thundrr-ref .search .clr{position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--faint);font-size:20px;line-height:1;display:none;background:none;border:none;font-family:inherit;}
 
+  #thundrr-ref .cat-filters{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:580px;margin:0 auto 18px;}
+  #thundrr-ref .cat-filter{padding:8px 14px;border-radius:100px;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;
+    color:var(--muted);background:var(--glass);border:1px solid var(--glass-bd);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:all .2s;}
+  #thundrr-ref .cat-filter:hover{color:#fff;border-color:rgba(255,13,74,.4);}
+  #thundrr-ref .cat-filter.sel{color:#fff;background:linear-gradient(105deg,var(--red),var(--orange));border-color:transparent;box-shadow:0 8px 20px rgba(255,13,74,.4);}
+
   #thundrr-ref .cat-shell{position:relative;}
   #thundrr-ref .cat-grid{display:grid;grid-template-columns:1fr;gap:12px;}
   #thundrr-ref .prod{position:relative;display:flex;align-items:center;gap:13px;padding:14px 15px;border-radius:18px;
@@ -380,27 +386,6 @@
     </div>
   </section>
 
-  <!-- HOW IT WORKS -->
-  <section class="sec">
-    <div class="wrap">
-      <span class="eyebrow rv">How It Works</span>
-      <h2 class="rv">Three steps. Real payouts.</h2>
-      <div class="steps">
-        <div class="card rv"><span class="glow"></span><div class="chead"><span class="num">01</span><h3>Refer a Creator</h3></div><p>Share Thundrr with any creator &mdash; already with us or brand new. <b>Everyone qualifies.</b></p></div>
-        <div class="card rv"><span class="glow"></span><div class="chead"><span class="num">02</span><h3>They Link &amp; Showcase</h3></div><p>They connect, add campaign products with <b>our links</b>, and promote.</p></div>
-        <div class="card rv"><span class="glow"></span><div class="chead"><span class="num">03</span><h3>You Get Paid</h3></div><p><b>1% of their settlement GMV</b> flows back to you for a <b>full year</b>.</p></div>
-      </div>
-      <div class="both rv">
-        <div class="pair">
-          <div class="chip"><div class="lbl">Your Bonus</div><div class="v">+1%</div></div>
-          <span class="x">for</span>
-          <div class="chip"><div class="lbl">Duration</div><div class="v">12 mo</div></div>
-        </div>
-        <p>You earn <b>1% of your referral's settlement GMV</b> for a <b>full year</b> &mdash; for as long as they stay linked with Thundrr.</p>
-      </div>
-    </div>
-  </section>
-
   <!-- CATALOGUE -->
   <section class="sec">
     <div class="wrap">
@@ -412,6 +397,7 @@
         <input type="text" id="trSearch" placeholder="Search brands or categories...">
         <button class="clr" id="trClear">&times;</button>
       </div>
+      <div class="cat-filters rv" id="trFilters"></div>
       <div class="cat-shell" id="trShell">
         <div class="cat-grid" id="trGrid"></div>
         <div class="veil" id="trVeil"><button class="expand-btn" id="trExpand">Click to expand <span id="trMore"></span> &#9662;</button></div>
@@ -652,6 +638,8 @@
       floatBtn=document.getElementById('trFloat');
   var expanded=false;
   var embedded=(window.self!==window.top);
+  var catFilter='All';
+  var filtersEl=document.getElementById('trFilters');
 
   function initials(n){var p=n.replace(/[^A-Za-z0-9 ]/g,'').trim().split(/\s+/);return ((p[0]||'')[0]||'')+((p[1]||'')[0]||(p[0]||'')[1]||'');}
   function cardHTML(p){
@@ -662,20 +650,24 @@
   }
   function render(){
     var q=searchEl.value.trim().toLowerCase();
-    var list=PRODUCTS.filter(function(p){return !q||p.name.toLowerCase().indexOf(q)>-1||p.cat.toLowerCase().indexOf(q)>-1;});
+    var list=PRODUCTS.filter(function(p){
+      var catOk=(catFilter==='All'||p.cat===catFilter);
+      var qOk=(!q||p.name.toLowerCase().indexOf(q)>-1||p.cat.toLowerCase().indexOf(q)>-1);
+      return catOk&&qOk;
+    });
     clrEl.style.display=q?'block':'none';
     noEl.style.display=list.length?'none':'block';
-    var searching=q.length>0;
-    var show=(expanded||searching)?list:list.slice(0,INITIAL);
+    var filtering=q.length>0||catFilter!=='All';
+    var show=(expanded||filtering)?list:list.slice(0,INITIAL);
     grid.innerHTML=show.map(cardHTML).join('');
-    // veil only when collapsed, not searching, and there are more than INITIAL
-    var collapsed=!expanded && !searching && list.length>INITIAL;
+    // veil only when collapsed, not filtering, and there are more than INITIAL
+    var collapsed=!expanded && !filtering && list.length>INITIAL;
     shell.classList.toggle('open',!collapsed);
     veil.style.display=collapsed?'flex':'none';
     moreEl.textContent='('+Math.max(list.length-INITIAL,0)+' more)';
-    floatBtn.classList.toggle('show',!embedded && expanded && !searching);
+    floatBtn.classList.toggle('show',!embedded && expanded && !filtering);
     // mirror to Webflow parent (matches existing tdrCollapseBtn contract)
-    try{window.parent.postMessage({type:'tdrCollapseBtn',action:(expanded&&!searching)?'show':'hide'},'*');}catch(e){}
+    try{window.parent.postMessage({type:'tdrCollapseBtn',action:(expanded&&!filtering)?'show':'hide'},'*');}catch(e){}
     postH();
   }
   function expand(){expanded=true;render();}
@@ -685,6 +677,17 @@
   floatBtn.addEventListener('click',collapse);
   clrEl.addEventListener('click',function(){searchEl.value='';render();searchEl.focus();});
   searchEl.addEventListener('input',render);
+  // category filter chips (same catalogue, filter by brand category)
+  var mainCats=['All'].concat(PRODUCTS.map(function(p){return p.cat;}).filter(function(c,i,a){return a.indexOf(c)===i;}));
+  filtersEl.innerHTML=mainCats.map(function(c){
+    return '<button type="button" class="cat-filter'+(c==='All'?' sel':'')+'" data-cat="'+c+'">'+c+'</button>';
+  }).join('');
+  Array.prototype.slice.call(filtersEl.querySelectorAll('.cat-filter')).forEach(function(f){
+    f.addEventListener('click',function(){
+      filtersEl.querySelectorAll('.cat-filter').forEach(function(x){x.classList.remove('sel');});
+      f.classList.add('sel');catFilter=f.getAttribute('data-cat');render();
+    });
+  });
   // parent can trigger collapse too (existing contract)
   window.addEventListener('message',function(e){if(e.data&&e.data.type==='tdrCollapse')collapse();});
   // viewport slice from the parent embed -> reposition the open modal over it
